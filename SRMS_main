@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME_LEN 50
+#define FILE_NAME "students.txt"
+
+typedef struct {
+    int id;
+    char name[MAX_NAME_LEN];
+    int age;
+    char grade[5];
+} Student;
+
+void add_student() {
+    Student s;
+    FILE *fp = fopen(FILE_NAME, "a");
+    if (!fp) {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    printf("Enter ID: ");
+    scanf("%d", &s.id);
+    printf("Enter Name: ");
+    scanf(" %[^\n]", s.name);
+    printf("Enter Age: ");
+    scanf("%d", &s.age);
+    printf("Enter Grade: ");
+    scanf("%s", s.grade);
+
+    fprintf(fp, "%d,%s,%d,%s\n", s.id, s.name, s.age, s.grade);
+    fclose(fp);
+    printf("Student added successfully.\n");
+}
+
+void view_students() {
+    Student s;
+    FILE *fp = fopen(FILE_NAME, "r");
+    if (!fp) {
+        printf("No records found.\n");
+        return;
+    }
+
+    printf("\n%-5s %-20s %-5s %-5s\n", "ID", "Name", "Age", "Grade");
+    printf("----------------------------------------\n");
+    while (fscanf(fp, "%d,%[^,],%d,%s\n", &s.id, s.name, &s.age, s.grade) != EOF) {
+        printf("%-5d %-20s %-5d %-5s\n", s.id, s.name, s.age, s.grade);
+    }
+    fclose(fp);
+}
+
+void update_student() {
+    int id, found = 0;
+    Student s;
+    FILE *fp = fopen(FILE_NAME, "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (!fp || !temp) {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    printf("Enter ID of student to update: ");
+    scanf("%d", &id);
+
+    while (fscanf(fp, "%d,%[^,],%d,%s\n", &s.id, s.name, &s.age, s.grade) != EOF) {
+        if (s.id == id) {
+            found = 1;
+            printf("Enter new Name: ");
+            scanf(" %[^\n]", s.name);
+            printf("Enter new Age: ");
+            scanf("%d", &s.age);
+            printf("Enter new Grade: ");
+            scanf("%s", s.grade);
+        }
+        fprintf(temp, "%d,%s,%d,%s\n", s.id, s.name, s.age, s.grade);
+    }
+
+    fclose(fp);
+    fclose(temp);
+    remove(FILE_NAME);
+    rename("temp.txt", FILE_NAME);
+
+    if (found)
+        printf("Student updated successfully.\n");
+    else
+        printf("Student with ID %d not found.\n", id);
+}
+
+void delete_student() {
+    int id, found = 0;
+    Student s;
+    FILE *fp = fopen(FILE_NAME, "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (!fp || !temp) {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    printf("Enter ID of student to delete: ");
+    scanf("%d", &id);
+
+    while (fscanf(fp, "%d,%[^,],%d,%s\n", &s.id, s.name, &s.age, s.grade) != EOF) {
+        if (s.id != id) {
+            fprintf(temp, "%d,%s,%d,%s\n", s.id, s.name, s.age, s.grade);
+        } else {
+            found = 1;
+        }
+    }
+
+    fclose(fp);
+    fclose(temp);
+    remove(FILE_NAME);
+    rename("temp.txt", FILE_NAME);
+
+    if (found)
+        printf("Student deleted successfully.\n");
+    else
+        printf("Student with ID %d not found.\n", id);
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\nStudent Record Management System\n");
+        printf("1. Add Student\n");
+        printf("2. View Students\n");
+        printf("3. Update Student\n");
+        printf("4. Delete Student\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: add_student(); break;
+            case 2: view_students(); break;
+            case 3: update_student(); break;
+            case 4: delete_student(); break;
+            case 5: printf("Exiting...\n"); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 5);
+
+    return 0;
+}
