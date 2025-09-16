@@ -1,105 +1,21 @@
-
-//***************************************************
-//*        ================================         *
-//*        Student Record Management System         *
-//*        ================================         *
-//***************************************************
-//*                     Author                      *
-//*                     ------                      *
-//*                Prashant Bhandari                *
-//***************************************************
-
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <string.h>
 void clrscr();
-//function to clear console screen.
 void gotoxy(short x, short y);
-//This function places cursor at a desired location on screen i.e., we can change cursor position using gotoxy function.
-/*
-                      5
-                      |   [120]Columns
-              *-------|-----------------------> (X-axis)     Example:-
-              | *-----|-------------------*                          gotoxy(5,5);
-              | |     |                   |                          printf("hello");
-          5 --|-|-----*hello              |
-         [30] | |     (5,5)               |                  Syntax:-
-         Rows | |                         |                          gotoxy(x,y);
-              | |     [output screen]     |
-              | |                         |                  where,
-              | |                         |                        x=x-coordinate
-              | |                         |                        y=y-coordinate
-              | |                         |
-              | *-------------------------*
-              |
-              V 
-    
-          (Y-axis)
-*/
 void box_single_line(int x, int y, int l, int w);
-//This function is used to print single line box in output screen.
-/*
-                   [120]Columns
-                       x(5)  
-                        |   
-              *---------|---------------------> (X-axis)       Example:-    
-              | *-------|-----------------*                             box_single_line(5,5,5,5);
-              | |       | l(5)            |
-              | |       |<----->          |
-       y(5)---|-|-------┌──────┐          |                    Syntax:- 
-              | |     ^ │      │          |                             box_single_line(x,y,l,w);
-              | |     | │ box  │          |          
-              | | w(5)| │      │          |
-    [30]      | |     | │      │          |                    where,
-    Rows      | |     V └──────┘          |                          x=x-coordinate
-              | |    [output screen]      |                          y=y-coordinate
-              | |                         |                          l=length
-              | *-------------------------*                          w=width
-              |
-              V
-           (Y-axis)
-*/
 void box_double_line(int x, int y, int l, int w);
-//This function is same as above function but used to print double line box in output screen.
-/*
-                        [120]Columns
-						    
-              *-------------------------------> (X-axis)       Example:-    
-              | *-------------------------*                             box_double_line(5,5,5,5);
-              | |                         |
-              | |                         |
-              | |       ╔══════╗          |                    Syntax:- 
-              | |       ║      ║          |                            box_double_line(x,y,l,w);
-              | |       ║ box  ║          |
-              | |       ║      ║          |                    where,
-    [30]      | |       ║      ║          |                         x=x-coordinate
-    Rows      | |       ╚══════╝          |                         y=y-coordinate
-              | |     [output screen]     |                         l=length
-              | |                         |                         w=width
-              | *-------------------------*
-              |
-              V
-           (Y-axis)
-*/
 int login();
 void print_menu();
-//This function prints Main Menu.
 void print_delmenu();
-//This function prints Delete Menu.
 void rcreate();
-//This function creates records.
 void rdisplay();
-//This function displays records.
 void rsearch();
-//This function searches records.
 void rmodify();
-//This function modify records.
 void rdelete();
-//This function deletes records.
 void ralldelete();
-//This function deletes all records.
 void logout();
 int user = 0;
 struct student
